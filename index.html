@@ -1,0 +1,214 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>DrinkMap</title>
+	
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <script src="https://kit.fontawesome.com/23f4b8a02d.js" crossorigin="anonymous"></script>
+
+    <script src="https://unpkg.com/jquery@3.6.0/dist/jquery.min.js"
+    integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK"
+    crossorigin="anonymous"></script>
+
+    <!-- Include Leaflet CSS and JavaScript files -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+	<link rel="stylesheet" href="./styles/MarkerCluster.css" />
+	<link rel="stylesheet" href="./styles/MarkerCluster.Default.css" />
+	<script src="./js/leaflet.markercluster-src.js"></script>
+    <script src="./js/leaflet.markercluster.js"></script>
+
+    <!-- Include Leaflet Sidebar CSS and JavaScript files -->
+    <link rel="stylesheet" href="./styles/L.Control.Sidebar.css" />
+    <script src="./js/L.Control.Sidebar.js"></script>
+
+    <!-- leaflet.minimap -->
+    <link rel="stylesheet" href="./styles/Control.MiniMap.css">
+    <script src='./js/Control.MiniMap.js'></script>
+
+    <!-- leaflet.fullscreen -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.fullscreen/1.4.5/Control.FullScreen.css">
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/leaflet.fullscreen/1.4.5/Control.FullScreen.js'></script>
+
+    <!--measure - https://github.com/ljagis/leaflet-measure
+    <script type='text/javascript' src='./maps/leaflet-measure.js'></script>
+    <link rel="stylesheet" href="./maps/leaflet-measure.css">-->
+
+    <!--MousePosition-Control - https://github.com/ardhi/Leaflet.MousePosition-->
+    <script type='text/javascript' src='./js/MousePosition-Control.js'></script>
+    <link rel="stylesheet" href="./styles/MousePosition-Control.css">
+
+    <!-- leaflet.locatecontrol -->
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/leaflet-locatecontrol/0.66.1/L.Control.Locate.min.js'></script>
+    <link href='https://cdnjs.cloudflare.com/ajax/libs/leaflet-locatecontrol/0.66.1/L.Control.Locate.mapbox.css'
+    rel='stylesheet'>
+
+    <!-- leaflet.search -->
+    <link href='https://cdn.jsdelivr.net/npm/leaflet-search@2.9.8/dist/leaflet-search.min.css' rel='stylesheet'>
+    <script src="./js/leaflet.search.js"></script>
+
+    <style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Glyphicons Halflings';
+    }
+
+    html,body{
+        width: 100%;
+        height: 100%;
+    }
+    :root {
+    --arrow-bg: rgba(0, 0, 0, 0.6);
+    --arrow-icon: url(https://upload.wikimedia.org/wikipedia/commons/9/9d/Caret_down_font_awesome_whitevariation.svg);
+    --option-bg: rgba(0, 0, 0, 0.4);
+    --select-bg: rgba(0, 0, 0, 0.4);
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Glyphicons Halflings';
+    }
+
+    html,body{
+    width: 100%;
+    height: 100%;
+    }
+    
+    #sidebar {
+      background-color: rgba(0, 0, 0, 0.5);
+      height: 90%;
+      overflow-y: auto;
+    }
+
+    #closeButton{
+        background-color: rgba(0, 0, 0, 0.4);
+        color: white;
+        outline: none;
+        position: absolute;
+        right: 5px;
+        top: 5px;
+        width: 31px;
+        height: 31px;
+        
+        font-size: 25pt;
+        line-height: 1em;
+        text-align: center;
+        -webkit-border-radius: 16px;
+        border-radius: 16px;
+        cursor: pointer;
+        z-index: 800;
+    }
+    #sidebar-content p,h2{
+        color: white;
+    }
+    #sidebar-content a{
+      background: rgba(255,255,255,1);
+      padding: 1px 10px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-size: 16px;
+    }
+    
+    select {
+    /* Reset */
+        appearance: none;
+        border: 0;
+        outline: 0;
+        font: inherit;
+        font-size:medium;
+        /* Personalize */
+        width: 20rem;
+        padding: 1rem 4rem 1rem 1rem;
+        background: var(--arrow-icon) no-repeat right 0.8em center / 1.4em,
+        linear-gradient(to left, var(--arrow-bg) 3em, var(--select-bg) 3em);
+        color: white;
+        border-radius: 0.25em;
+        box-shadow: 0 0 1em 0 rgba(0, 0, 0, 0.3);
+        cursor: pointer;
+    }
+    option {
+        color: none ;
+        background-color: var(--option-bg);
+    } 
+    .leaflet-control-locate .fa-location-dot {
+      margin-left: -10px;
+    }
+
+    .leaflet-container .leaflet-control-search {
+      background-color: #fff;
+      /*margin-left: 999px;*/
+    }
+
+    
+    #findbox {
+        background: rgba(255, 255, 255, 0.8);
+        border-radius:.125em;
+        border:1px solid #1978cf;
+        box-shadow: 0 0 2px #999;	
+        margin-bottom: 10px;
+        padding: 2px 0;
+        width: 20rem;
+        height: 36px;
+    }  
+    .leaflet-control-search input.search-input {
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: #000;
+      width: 14rem;
+    }
+
+    .leaflet-control-search .search-tooltip {
+      background: #fff;
+      width: 20rem;
+    }
+    .leaflet-control-search.search-exp {
+        border: 0;
+    }
+    .leaflet-control-search li.search-tip {
+      background: transparent;
+    }
+
+    .leaflet-control-search li.search-tip:hover {
+      background: #ccc;
+    }
+    </style>
+</head>
+<body>
+
+	<div id="map" style="width: 100%; height: 100%; pointer-events: auto; border: 1px solid #AAA;"></div>
+    <div class="sidebar" id="sidebar">
+        <span id="closeButton">
+            ×
+        </span>
+        <select id="overlay-select">
+            <option selected value="0"><h1>-----品牌選擇-----</h1></option>
+            <option value="1">可不可紅茶</option>
+            <option value="2">都可COCO</option>
+            <option value="3">迷克夏</option>
+            <option value="4">COMEBUY</option>
+            <option value="5">貢茶</option>
+            <option value="6">茶湯會</option>
+            <option value="7">50嵐</option>
+            <option value="8">麻古茶坊</option>
+            <option value="9">鬍子茶Who'sTea</option>
+            <option value="10">五桐號WooTea</option>
+            <option value="11">思茶MissingTea</option>
+            <option value="11">清心福全</option>
+        </select>
+        <div id="findbox"></div>
+        <div id="sidebar-content"></div>
+    
+        
+    </div>
+    <script type="text/javascript" src="./js/data.js"></script>
+	<script type="text/javascript"  src="./js/t3.js"></script>
+    
+</body>
+</html>

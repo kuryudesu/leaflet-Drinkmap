@@ -1,0 +1,11 @@
+{
+  "dependencies": {
+    "@mapbox/togeojson": "^0.16.2",
+    "togeojson": "^0.16.0",
+    "xml2js": "^0.6.2",
+    "xmldom": "^0.6.0"
+  },
+  "devDependencies": {
+    "gh-pages": "^6.3.0"
+  }
+}
